@@ -1,5 +1,5 @@
-# from youtube_transcript_api import YouTubeTranscriptApi
-# from urllib.parse import urlparse
+from youtube_transcript_api import YouTubeTranscriptApi
+from urllib.parse import urlparse
 # from translate import Translator
 # # # def ExtractTranscript(url:str)->str:
 # # #     """Accepts a youtube url and returns Youtube Video Transcript"""
@@ -33,28 +33,59 @@
 # # # trans=ExtractTranscript('https://youtu.be/f8npDOBLoR4?si=lvDQt29pCspsk8cR')   
 # # # print(trans )    
 
-# # try:
-# #     ytt_api = YouTubeTranscriptApi()
-# #     transcript_list = ytt_api.list('sn9hZoCYbm4')
-# #     try:
-# #         manualtranscripts = transcript_list.find_manually_created_transcript(['en', 'es', 'fr', 'de', 'ja', 'ru', 'ar','hi','zh-Hans', 'bn', 'mr', 'ta', 'te', 'gu'])
-# #         transcript_data = manualtranscripts.fetch()
+# try:
+#     ytt_api = YouTubeTranscriptApi()
+#     transcript_list = ytt_api.list('61rmMkEdySM')
+#     try:
+#         manualtranscripts = transcript_list.find_manually_created_transcript(['en', 'es', 'fr', 'de', 'ja', 'ru', 'ar','hi','zh-Hans', 'bn', 'mr', 'ta', 'te', 'gu'])
+#         transcript_data = manualtranscripts.fetch()
         
-# #         transcript=""
-# #         for i in range(0,len(transcript_data)):
-# #             t=transcript_data[i].text
-# #             transcript=transcript+t+" "
-# #         print(transcript)  
-# #     except:    
-# #         autotranscripts=transcript_list.find_generated_transcript(['en', 'es', 'fr', 'de', 'ja', 'ru', 'ar','hi','zh-Hans', 'bn', 'mr', 'ta', 'te', 'gu'])
-# #         transcript_data = autotranscripts.fetch()
-# #         transcript=""
-# #         for i in range(0,len(transcript_data)):
-# #             t=transcript_data[i].text
-# #             transcript=transcript+t+" "
-# #         print(transcript)  
-# # except:
-# #     print("Error")
+#         transcript=""
+#         for i in range(0,len(transcript_data)):
+#             t=transcript_data[i].text
+#             transcript=transcript+t+" "
+#         print(transcript)  
+#     except:    
+#         autotranscripts=transcript_list.find_generated_transcript(['en', 'es', 'fr', 'de', 'ja', 'ru', 'ar','hi','zh-Hans', 'bn', 'mr', 'ta', 'te', 'gu'])
+#         transcript_data = autotranscripts.fetch()
+#         transcript=""
+#         for i in range(0,len(transcript_data)):
+#             t=transcript_data[i].text
+#             transcript=transcript+t+" "
+#         print(transcript)  
+# except:
+#     print("Error")
+
+
+def ExtractTranscript(url: str) -> str:
+    """Accepts a youtube url and returns Youtube Video Transcript Language and Youtube Video Transcript"""
+    try:
+        ytt_api = YouTubeTranscriptApi()
+        start = url.index("https://youtu.be/") + len("https://youtu.be/")
+        end = url.index("?")
+        id = url[start:end]
+        transcript_list = ytt_api.list(id)
+
+        try:
+            transcript_obj = transcript_list.find_manually_created_transcript(
+                ['en','es','fr','de','ja','ru','ar','hi','zh-Hans','bn','mr','ta','te','gu']
+            )
+        except:
+            transcript_obj = transcript_list.find_generated_transcript(
+                ['en','es','fr','de','ja','ru','ar','hi','zh-Hans','bn','mr','ta','te','gu']
+            )
+
+        transcript_data = transcript_obj.fetch()
+
+        transcript = " ".join([t.text for t in transcript_data])
+
+        return {"transcript":transcript}
+
+    except:
+        return "Transcript Not available for this video."
+    
+
+print(ExtractTranscript("https://youtu.be/61rmMkEdySM?si=AM4DDcLx-aKepWTx")    )
 
 
 # def translateToEn(non_en_transcript:str)->str:

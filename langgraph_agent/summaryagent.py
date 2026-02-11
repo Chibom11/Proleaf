@@ -44,23 +44,7 @@ def ExtractTranscript(url: str) -> str:
 
         transcript = " ".join([t.text for t in transcript_data])
 
-        # Language Detection
-        try:
-            detected_lang = detect(transcript)
-        except:
-            detected_lang = "unknown"
-
-        # Return structured string (NOT JSON)
-            print(f"""
-            Language: {detected_lang}
-            ### TRANSCRIPT
-            {transcript}
-            """)
-            return f"""
-            Language: {detected_lang}
-            ### TRANSCRIPT
-            {transcript}
-            """
+        return {"transcript":transcript}
 
     except:
         return "Transcript Not available for this video."

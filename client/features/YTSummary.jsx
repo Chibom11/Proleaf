@@ -11,10 +11,11 @@ function YtSummary() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
+    console.log(String(url))
     try {
       const res = await axios.post(
         'http://localhost:8000/get-summary',
-        { url }
+        { url:String(url) }
       )
       setSummary(res.data.content)
     } catch (err) {

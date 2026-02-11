@@ -29,10 +29,10 @@ class SummaryInput(BaseModel):
     
 
 @app.post('/get-summary')
-async def get_summary(url:str):
+async def get_summary(data:SummaryInput):
     try:
         
-        result = chatbot.invoke({"messages": [HumanMessage(content=url)]},)
+        result = chatbot.invoke({"messages": [HumanMessage(content=data.url)]},)
         
         # Return the last message content (AI's response)
         return {"content": result['messages'][-1].content}
