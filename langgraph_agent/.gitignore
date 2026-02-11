@@ -1,0 +1,13 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+.env
+
+# Python bytecode caches
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+#chromadb
+chroma_db/
